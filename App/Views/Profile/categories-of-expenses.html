@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block js_validate %}
+
+    <script>
+        $(document).ready(function() {
+		
+			$.validator.addMethod(
+            "regex",
+            function(value, element, regexp) 
+            {
+                if (regexp.constructor != RegExp)
+                    regexp = new RegExp(regexp);
+                else if (regexp.global)
+                    regexp.lastIndex = 0;
+                return this.optional(element) || regexp.test(value);
+            },
+            "Please check your input."
+			);
+
+            /**
+             * Validate the form
+             */
+            $('#formExpense').validate({
+                rules: {
+                    name: {
+					 required: true
+					},
+					limit: {
+						regex: /^(\d+(?:[\.\,]\d{1,2})?)$/	
+					}
+				},
+				messages: {
+					limit: {
+						regex: 'Wpisz poprawną kwotę.'
+					}
+				}
+            });
+			
+		{% for expense in expense %}
+		
+			$('#updateForm'+{{loop.index}}).validate({
+                rules: {
+					limit: {
+						regex: /^(\d+(?:[\.\,]\d{1,2})?)$/	
+					}
+				},
+				messages: {
+					limit: {
+						regex: 'Wpisz poprawną kwotę.'
+					}
+				}
+            });
+		
+		{% endfor %}
+			
+		});
+		
+		$('#limitCheckbox').change(function() {
+			$('#inputLimit').attr('disabled',!this.checked)
+		});
+		
+		{% for expense in expense %}
+			$('#editLimitCheckbox'+{{loop.index}}).change(function() {
+				$('#editInputLimit'+{{loop.index}}).attr('disabled',!this.checked)
+			});
+		{% endfor %}
+
+    </script>
+
+{% endblock %}
+
+{% block body %}
+
+	<h3 class="h5 mb-3">Ustawienia</h3>
+		
+	{% if expense.errors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in expense.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+		<div class="categoriesOfExpenses mt-2">
+			<table class="table table-striped m-auto" style="max-width:420px;">
+				<thead>
+					<tr>
+						<th scope="col" colspan="5" style="background-color: #00b8e6; text-align:center; color: white; font-size: 15px; height: 40px;">Kategorie wydatków</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+										
+					{% for expense in expense %}
+					<tr>
+					
+						<td>{{ loop.index }}</td>
+					
+						<td>{{ expense.name }}</td>
+						
+						<td style="color: red;"> {% if expense.expense_limit > 0 %} Limit: {{ expense.expense_limit }} {% endif %} </td>
+						
+						<td>
+								
+							<div id="editExpense{{ loop.index }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="editExpense" aria-hidden="true">
+							
+								<form action="/profile/update-expense" method="post" id="updateForm{{ loop.index }}">
+			
+									<div class="modal-dialog">
+			
+										<div class="modal-content">
+						
+											<div class="modal-header">
+												<h5>Edycja kategorii wydatku</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+
+											<div class="form-group">
+												<label for="name">Nowa nazwa kategorii wydatku</label>
+												
+												<input type="hidden" name="oldName" value="{{ expense.name }}" />
+												
+												<input type="text" name="name" value="{{ expense.name }}" required class="form-control" style="max-width: 320px;" /> <br />
+												
+												<div class="checkbox mb-0">
+													<label>
+														<input type="checkbox" name="Limit" id="editLimitCheckbox{{ loop.index }}" />   Ustaw miesięczny limit dla kategorii
+													</label>
+												</div>
+			
+												<div class="form-group mt-0 p-0">
+													<label for="editInputLimit" class="sr-only">Limit</label>
+													<input id="editInputLimit{{ loop.index }}" name="limit" placeholder="Limit" class="form-control" disabled style="max-width: 320px" />
+												</div>
+											</div>
+						
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Anuluj</button>
+												<button type="submit" class="btn btn-primary" style="width: 100px;">Zapisz</button>
+											</div>
+
+										</div>
+					
+									</div>
+									
+								</form>
+			
+							</div>
+								
+							<button type="button" class="icon-pencil" data-toggle="modal" data-target="#editExpense{{ loop.index }}" style="color: #5e5c5c !important; border: none; background-color: transparent;"> </button>
+								
+						</td>
+						
+						<td>
+							<div id="deleteExpense{{ loop.index }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="deleteExpense" aria-hidden="true">
+							
+								<form action="/profile/delete-expense" method="post">
+									
+									<div class="modal-dialog">
+			
+										<div class="modal-content">
+						
+											<div class="modal-header">
+												<h5>Usuwanie kategorii wydatku</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+
+											<div class="form-group">
+												<h5></br>Czy na pewno chcesz usunąć kategorię wydatku?</h5>
+												<input type="hidden" name="oldName" value="{{ expense.name }}" />
+											</div>
+						
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Anuluj</button>
+												<button type="submit" class="btn btn-primary" style="width: 100px;">Usuń</button>
+											</div>
+
+										</div>
+					
+									</div>
+									
+								</form>
+									
+							</div>
+							
+							<button type="button" class="icon-trash-empty" data-toggle="modal" data-target="#deleteExpense{{ loop.index }}" style="color: #5e5c5c !important; border: none; background-color: transparent;"> </button>
+							
+						</td>
+					
+					</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+			
+		</div>
+		
+		<div class="addNewCategory">
+			
+			<h3 class="h5 mb-3 mt-5">Dodaj nową kategorię wydatków</h3>
+
+			{% if expense.errors is not empty %}
+				<p>Errors:</p>
+				<ul>
+					{% for error in expense.errors %}
+						<li>{{ error }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+
+			<form action="/profile/create-expense" method="post" id="formExpense">
+			
+				 <div class="form-group">
+					<label for="inputName" class="sr-only">Nazwa</label>
+					<input id="inputName" name="name" placeholder="Nazwa" value="{{ expense.name}}" required class="form-control" style="max-width: 320px;" />
+				</div>
+			
+				<div class="checkbox mb-0">
+					<label>
+						<input type="checkbox" name="Limit" id="limitCheckbox" />  Ustaw miesięczny limit dla kategorii
+					</label>
+				</div>
+			
+				<div class="form-group mt-0 p-0">
+					<label for="inputLimit" class="sr-only">Limit</label>
+					<input id="inputLimit" name="limit" placeholder="Limit" class="form-control" disabled style="max-width: 320px" />
+				</div>
+				
+				<button type="submit" class="btn btn-lg btn-primary">Dodaj</button>
+			
+			</form>
+			
+		</div>	
+
+{% endblock %}

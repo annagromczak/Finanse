@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block js_validate %}
+
+    <script>
+        $(document).ready(function() {
+
+            /**
+             * Validate the form
+             */
+            $('#formIncome').validate({
+                rules: {
+                    name: {
+					 required: true
+					},
+				}
+            });
+		});
+
+    </script>
+
+{% endblock %}
+
+{% block body %}
+
+		<h3 class="h5 mb-3">Ustawienia</h3>
+
+		<div class="categoriesOfIncomes mt-2">
+			<table class="table table-striped m-auto" style="max-width:420px;">
+				<thead>
+					<tr>
+						<th scope="col" colspan="4" style="background-color: #00b8e6; text-align:center; color: white; font-size: 15px; height: 40px;">Kategorie przychodów</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+										
+					{% for income in income %}
+					<tr>
+						<td>{{ loop.index }}</td>
+						
+						<td>{{ income.name }}</td>
+						
+						<td>
+								
+							<div id="editIncome{{ loop.index }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="editIncome" aria-hidden="true">
+							
+								<form action="/profile/update-income" method="post">
+			
+									<div class="modal-dialog">
+			
+										<div class="modal-content">
+						
+											<div class="modal-header">
+												<h5>Edycja kategorii przychodu</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+
+											<div class="form-group">
+												<label for="name">Nowa nazwa kategorii przychodu</label>
+												<input type="hidden" name="oldName" value="{{ income.name }}" />
+												<input type="text" name="name" value="{{ income.name }}" required class="form-control" style="max-width: 320px;" />
+											</div>
+						
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Anuluj</button>
+												<button type="submit" class="btn btn-primary" style="width: 100px;">Zapisz</button>
+											</div>
+
+										</div>
+					
+									</div>
+									
+								</form>
+			
+							</div>
+								
+							<button type="button" class="icon-pencil" data-toggle="modal" data-target="#editIncome{{ loop.index }}" style="color: #5e5c5c !important; border: none; background-color: transparent;"> </button>
+								
+						</td>
+						
+						<td>
+							<div id="deleteIncome{{ loop.index }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="deleteIncome" aria-hidden="true">
+							
+								<form action="/profile/delete-income" method="post">
+									
+									<div class="modal-dialog">
+			
+										<div class="modal-content">
+						
+											<div class="modal-header">
+												<h5>Usuwanie kategorii przychodu</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+
+											<div class="form-group">
+												<h5></br>Czy na pewno chcesz usunąć kategorię przychodu?</h5>
+												<input type="hidden" name="oldName" value="{{ income.name }}" />
+											</div>
+						
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Anuluj</button>
+												<button type="submit" class="btn btn-primary" style="width: 100px;">Usuń</button>
+											</div>
+
+										</div>
+					
+									</div>
+									
+								</form>
+									
+							</div>
+							
+							<button type="button" class="icon-trash-empty" data-toggle="modal" data-target="#deleteIncome{{ loop.index }}" style="color: #5e5c5c !important; border: none; background-color: transparent;"> </button>
+							
+						</td>
+												
+					</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+			
+		</div>
+		
+		<div class="addNewCategory">
+			
+			<h3 class="h5 mb-3 mt-5">Dodaj nową kategorię przychodów</h3>
+
+			{% if income.errors is not empty %}
+				<p>Errors:</p>
+				<ul>
+					{% for error in income.errors %}
+						<li>{{ error }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+
+			<form action="/profile/create-income" method="post" id="formIncome">
+			
+				 <div class="form-group">
+					<label for="inputName" class="sr-only">Nazwa</label>
+					<input id="inputName" name="name" placeholder="Nazwa" value="{{ income.name}}" required class="form-control" style="max-width: 320px;" />
+				</div>
+				
+				<button type="submit" class="btn btn-lg btn-primary">Dodaj</button>
+			
+			</form>
+			
+		</div>	
+
+{% endblock %}

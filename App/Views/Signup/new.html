@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block js_validate %}
+    <script src="/js/hideShowPassword.min.js"></script>
+    <script src="/js/app.js"></script>
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script>
+        $(document).ready(function() {
+
+            /**
+             * Validate the form
+             */
+            $('#formSignup').validate({
+                rules: {
+                    name: 'required',
+                    email: {
+                        required: true,
+                        email: true,
+                        remote: '/account/validate-email'
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6,
+                        validPassword: true
+                    }
+                },
+                messages: {
+                    email: {
+                        remote: 'Email already taken'
+                    }
+                }
+            });
+
+            /**
+              * Show password toggle button
+              */
+            $('#inputPassword').hideShowPassword({
+                show: false,
+                innerToggle: 'focus'
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block body %}
+
+    <h3 class="h3 mb-4">Rejestracja</h3>
+
+    {% if user.errors is not empty %}
+        <p style="color: red;">Errors:</p>
+        <ul>
+            {% for error in user.errors %}
+                <li style="color: red;">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form action="/signup/create" method="post" id="formSignup">
+
+        <div class="form-group">
+            <label for="inputName" class="sr-only">Nazwa</label>
+            <input id="inputName" name="name" placeholder="Nazwa" value="{{ user.name }}" required class="form-control" style="max-width: 320px;" />
+        </div>
+        <div class="form-group">
+            <label for="inputEmail" class="sr-only">Adres e-mail</label>
+            <input id="inputEmail" name="email" placeholder="Adres e-mail" value="{{ user.email }}" required type="email" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="inputPassword" class="sr-only">Hasło</label>
+            <input type="password" id="inputPassword" name="password" placeholder="Hasło" required class="form-control" />
+        </div>
+		<div class="reCaptcha">
+			<div class="g-recaptcha m-auto" style="width: 305px;" data-sitekey=""></div>
+		</div>
+
+		<button type="submit" class="btn btn-lg btn-primary">Zarejestruj się</button>
+
+    </form>
+
+{% endblock %}

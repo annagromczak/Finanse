@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+	<meta name="description" content="Aplikacja internetowa do prowadzenia budżetu osobistego!">
+	<meta name="keywords" content="aplikacja internetowa, budżet osobisty, oszczędzanie, pieniądze">
+	<meta name="author" content="Anna Gromczak">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/fontello.css">
+
+</head>
+
+<body>
+
+	<div class="wrapper">
+
+		{% block header %}
+		
+			<div class="page-header mt-2 text-center">
+			
+				<h1>Aplikacja internetowa do prowadzenia budżetu osobistego</h1>
+				<p> To nie od ilości zarobionych pieniędzy zależy jakość twojego myślenia i życia, <br />ale od jakości twojego myślenia zależy ilość pieniędzy, które zatrzymasz i jakość twojego życia <br /> – Robert Krool. </p>
+			
+			</div>
+						
+		{% endblock %}
+
+		<main>
+		
+			<section>
+			
+				<div class="container p-4">
+				
+					<div class="jumbotron col-md-8 m-auto p-5 text-center">
+
+						{% for message in flash_messages %}
+							<div class="alert alert-{{ message.type }}">
+								{{ message.body }}
+							</div>
+						{% endfor %}
+						
+						{% block body %}
+						{% endblock %}
+		
+					</div>
+		
+				</div>
+				
+			</section>
+			
+		</main>	
+
+	<div class="push"></div>
+		
+	</div>		
+
+    <footer class="footer">
+	
+		<div class="container">
+			
+			<div class="row">
+				
+				<div class="col-md-12 text-center">
+					
+					<a href="https://annagromczak.it" target="_blank" class="sociallink"><i class="icon-college fa-lg white-text mr-md-5 mr-3 fa-2x"></i></a>
+					<a href="https://www.linkedin.com/in/anna-gromczak-630505119/" target="_blank" class="sociallink fa-lg white-text mr-md-5 mr-3 fa-2x"><i class="icon-linkedin-squared"></i></a>
+					<a href="https://github.com/annagromczak" target="_blank" class="sociallink fa-lg white-text mr-md-5 mr-3 fa-2x"><i class="icon-github-circled"></i></a>
+					<a href="https://it-leaders.pl/" target="_blank" class="sociallink"><i class="icon-users fa-lg white-text mr-md-5 mr-3 fa-2x"></i></a>
+						
+				</div>
+									
+			</div>
+				
+			<hr>
+						
+			<div class="footer-copyright text-center m-3"> 2020 &copy; Anna Gromczak. <i class="icon-mail-alt"></i>kontakt@annagromczak.it</div>
+				
+		</div>
+	
+	</footer>
+	
+	{% block js %}
+
+	<!-- Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    
+	<!-- JS Validation -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	
+	{% endblock %}
+	
+</body>
+</html>

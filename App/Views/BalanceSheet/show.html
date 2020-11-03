@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Balance sheet{% endblock %}
+
+{% block js_validate %}
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	
+<script>
+
+window.onload = function () {
+	
+var incomes = Math.round(document.getElementById("incomesSum").innerHTML);
+var expenses = Math.round(document.getElementById("expensesSum").innerHTML);
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme: "light1",
+	data: [{        
+		type: "column",  
+		legendMarkerColor: "grey",
+		dataPoints: [      
+			{ y: incomes, label: "Przychody" },
+			{ y: expenses,  label: "Wydatki" }
+			]
+		}]
+	});
+	
+chart.render();
+
+}
+
+</script>
+	
+{% endblock %}
+
+{% block body %}
+
+    <h6>Podsumowanie przychodów oraz wydatków<br /><strong>{{ period }}</strong></h5>
+	
+	{% if (temporaryIncomesSum > 0) or (temporaryExpensesSum > 0) %}
+	
+	<div class="row">
+		
+		<div id="chartContainer" class="chartContainer col-lg-6 m-auto text-center" style="height: 200px; width: 300px;"></div>
+			
+		<div class="podsumowanieSalda col-lg-6 m-auto text-center">	
+			
+			<div style="font-size: 15px; font-weight: 700;">
+										{{ summary }}
+			</div>
+		
+		</div>
+							
+	</div>	
+
+    <div class="row">
+							
+		<div class="incomesTable col-lg-6 mt-4">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col" colspan="3" style="background-color: #00b8e6; text-align:center; color: white; font-size: 15px;">Przychody</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					{% for income in income %}
+					
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td>{{ income.name }}</td>
+						<td>{{ income.temporary_sum }}</td>
+					</tr>
+					{% endfor %}
+
+					<tr>
+						<td colspan="2" style="font-weight: 700;">Podsumowanie</td>
+						<td id="incomesSum" style="font-weight: 700;">	{{ temporaryIncomesSum }}</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>						
+							
+		<div class="expensesTable col-lg-6 mt-4">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col" colspan="3" style="background-color: #00b8e6; text-align:center; color: white; font-size: 15px;">Wydatki</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for expense in expense %}
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td>{{ expense.name }}</td>
+						<td>{{ expense.temporary_sum }}</td>
+					</tr>
+					{% endfor %}
+											
+					<tr>
+						<td colspan="2" style="font-weight: 700;">Podsumowanie</td>
+						<td id="expensesSum" style="font-weight: 700;">	{{ temporaryExpensesSum }}</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+		
+	</div>
+	
+	{% else %}
+	
+	<div class="podsumowanieSalda col-lg-6 m-auto text-center">	
+			
+			<div style="font-size: 15px; font-weight: 700; color: red; margin-top: 25px;">
+			
+				Dodaj przychody oraz wydatki aby wyświetlić bilans.
+			
+			</div>
+		
+		</div>
+	
+	{% endif %}
+
+{% endblock %}

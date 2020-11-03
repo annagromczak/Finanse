@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+	<meta name="description" content="Aplikacja internetowa do prowadzenia budżetu osobistego!">
+	<meta name="keywords" content="aplikacja internetowa, budżet osobisty, oszczędzanie, pieniądze">
+	<meta name="author" content="Anna Gromczak">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<!-- DatePicker -->
+	<link rel="stylesheet" type="text/css" href=".https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+	
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/fontello.css" type="text/css" />
+	
+</head>
+
+<body>
+
+	<div class="wrapper">
+
+		{% block header %}
+		
+			<div class="page-header mt-2 text-center">
+			
+				<h1>Aplikacja internetowa do prowadzenia budżetu osobistego</h1>
+				<p> To nie od ilości zarobionych pieniędzy zależy jakość twojego myślenia i życia, <br />ale od jakości twojego myślenia zależy ilość pieniędzy, które zatrzymasz i jakość twojego życia <br /> – Robert Krool. </p>
+			
+			</div>
+			
+			{% if current_user %}
+			
+			<div id="chooseDates" class="modal" tabindex="-1" role="dialog" aria-labelledby="chooseDates" aria-hidden="true">
+			
+				<div class="modal-dialog">
+			
+					<div class="modal-content">
+						
+						<div class="modal-header">
+							<h5>Wybierz okres</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						
+						<form method="post" action="/balance-sheet/show-non-standard">
+
+							<div class="row">
+				
+								<div class="col-5 text-center mt-4">
+									<label for="startDate">Data początkowa</label>
+								</div>
+										
+								<div class="col-5 text-center mt-4">
+									<input type="text" id="startDate" name="startDate" required class="form-control" data-provide="datepicker">
+								</div>
+									
+								<div class="col-5 text-center mt-4 mb-4">
+									<label for="endDate">Data końcowa</label>
+								</div>
+									
+								<div class="col-5 text-center mt-4 mb-4">
+									<input type="text" id="endDate" name="endDate" required class="form-control" data-provide="datepicker">
+								</div>
+						
+							</div>
+						
+							<div class="modal-footer">
+							
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+								<button type="submit" class="btn btn-primary">Zapisz</button>
+							
+							</div>
+						
+						</form>
+						
+					</div>
+					
+				</div>
+			
+			</div>
+			
+			<nav class="navbar navbar-expand-lg navbar-dark bg-navbar">
+							
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Toggler navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+							
+				<div class="collapse navbar-collapse justify-content-md-center" id="mainmenu">
+						
+					<ul class="navbar-nav">	
+					
+						<li class="nav-item active">
+							<a class="nav-link" href="/incomes/new"> Dodaj przychód </a>
+						</li>
+										
+						<li class="nav-item active">
+							<a class="nav-link" href="/expenses/new"> Dodaj wydatek </a>
+						</li>
+										
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"> Przeglądaj bilans </a>
+								
+							<div class="dropdown-menu" aria-labelledby="submenu">
+								<a class="dropdown-item" href="/balance-sheet/show-current-month">Bieżący miesiąc</a>
+								<a class="dropdown-item" href="/balance-sheet/show-previous-month">Poprzedni miesiąc</a>
+								<a class="dropdown-item" href="/balance-sheet/show-current-year">Bieżący rok</a>
+								<a class="dropdown-item" href="/balance-sheet/non-standard" data-toggle="modal" data-target="#chooseDates">Niestandardowy</a>
+							</div>
+								
+						</li>
+											
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"> Ustawienia </a>
+								
+							<div class="dropdown-menu" aria-labelledby="submenu">
+								<a class="dropdown-item" href="/profile/categories-of-incomes">Kategorie przychodów</a>
+								<a class="dropdown-item" href="/profile/categories-of-expenses">Kategorie wydatków</a>
+								<a class="dropdown-item" href="/profile/payment-methods">Sposoby płatności</a>
+								<a class="dropdown-item" href="/profile/show">Wyświetl profil</a>
+								<a class="dropdown-item" href="/profile/edit">Edytuj profil</a>
+							</div>
+								
+						</li>
+											
+						<li class="nav-item active">
+							<a class="nav-link" href="/logout"> Wyloguj </a>
+						</li>
+						
+					</ul>
+							
+				</div>
+				
+			</nav>
+			
+			{% endif %}
+						
+		{% endblock %}
+
+		<main>
+		
+			<section>
+			
+				<div class="container p-4">
+				
+					<div class="jumbotron col-md-10 m-auto p-5 text-center">
+
+						{% for message in flash_messages %}
+							<div class="alert alert-{{ message.type }}">
+								{{ message.body }}
+							</div>
+						{% endfor %}
+						
+						{% block body %}
+						{% endblock %}
+		
+					</div>
+		
+				</div>
+				
+			</section>
+			
+		</main>	
+
+	<div class="push"></div>
+		
+	</div>		
+
+    <footer class="footer">
+	
+		<div class="container">
+			
+			<div class="row">
+				
+				<div class="col-md-12 text-center">
+					
+					<a href="https://annagromczak.it" target="_blank" class="sociallink"><i class="icon-college fa-lg white-text mr-md-5 mr-3 fa-2x"></i></a>
+					<a href="https://www.linkedin.com/in/anna-gromczak-630505119/" target="_blank" class="sociallink fa-lg white-text mr-md-5 mr-3 fa-2x"><i class="icon-linkedin-squared"></i></a>
+					<a href="https://github.com/annagromczak" target="_blank" class="sociallink fa-lg white-text mr-md-5 mr-3 fa-2x"><i class="icon-github-circled"></i></a>
+					<a href="https://it-leaders.pl/" target="_blank" class="sociallink"><i class="icon-users fa-lg white-text mr-md-5 mr-3 fa-2x"></i></a>
+						
+				</div>
+									
+			</div>
+				
+			<hr>
+						
+			<div class="footer-copyright text-center m-3"> 2020 &copy; Anna Gromczak. <i class="icon-mail-alt"></i>kontakt@annagromczak.it</div>
+				
+		</div>
+	
+	</footer>
+	
+	{% block js %}
+
+	<!-- Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    
+	<!-- JS Validation -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	
+	<!-- DatePicker -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	
+	{% endblock %}
+	
+	<script>
+	
+        /**
+        * Validate the date
+        */
+		var date = new Date();
+		var currYear = date.getFullYear();
+		var currMonth = date.getMonth();
+		
+		var firstDayCurrMonth = new Date(currYear, currMonth, '01');
+		 
+		$('#startDate').datepicker({
+		format: "yyyy-mm-dd",
+		endDate: "0d",
+		language: "pl",
+		autoclose: true
+		});
+			
+		$('#endDate').datepicker({
+		format: "yyyy-mm-dd",
+		endDate: "0d",
+		language: "pl",
+		autoclose: true
+		});
+
+		$('#startDate').datepicker({
+            format:'yyyy-mm-dd',
+        }).datepicker("setDate", firstDayCurrMonth);
+
+		$('#endDate').datepicker({
+            format:'yyyy-mm-dd',
+        }).datepicker("setDate", 'now');
+	 
+    </script>
+	
+	{% block js_validate %}
+	{% endblock %}
+	
+</body>
+</html>

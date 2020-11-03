@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Add expense{% endblock %}
+
+{% block js_validate %}
+	<script src="/js/limit.js"></script>
+	
+    <script>
+        $(document).ready(function() {
+		
+		    $.validator.addMethod(
+            "regex",
+            function(value, element, regexp) 
+            {
+                if (regexp.constructor != RegExp)
+                    regexp = new RegExp(regexp);
+                else if (regexp.global)
+                    regexp.lastIndex = 0;
+                return this.optional(element) || regexp.test(value);
+            },
+            "Please check your input."
+			);
+
+            /**
+             * Validate the form
+             */
+            $('#formExpense').validate({
+                rules: {
+                    amount: {
+						required: true,
+						regex: /^(\d+(?:[\.\,]\d{1,2})?)$/	 
+					},
+					comment: {
+						maxlength: 70
+					},
+					expenseCategories: {
+						required: true
+					},
+					paymentMethods: {
+						required: true
+					}
+				},
+				messages: {
+					amount: {
+						regex: 'Wpisz poprawną kwotę.'
+					}
+				}
+            });
+		});
+		
+		/**
+        * Datepicker
+        */
+		$('#inputDate').datepicker({
+		format: "yyyy-mm-dd",
+		endDate: "0d",
+		language: "pl",
+		autoclose: true
+		});
+
+		$('#inputDate').datepicker({
+            format:'yyyy-mm-dd',
+        }).datepicker("setDate",'now');
+		
+    </script>
+	
+{% endblock %}
+
+{% block body %}
+	
+	<h3 class="h5 mb-3">Dodaj wydatek</h3>
+
+    {% if expense.errors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in expense.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form action="/expenses/create" method="post" id="formExpense">
+	
+		<p id="infoLimit"></p>
+		
+		<div class="form-group">
+            <label for="inputAmount" class="sr-only">Kwota</label>
+            <input id="inputAmount" name="amount" placeholder="Kwota" value="{{ user.amount }}" required class="form-control" style="max-width: 320px;" />
+        </div>
+		
+		<div class="form-group">
+			<label for="inputDate" class="sr-only">Data</label>
+			<input type="text" id="inputDate" name="date" required class="form-control"  data-provide="datepicker" style="max-width: 320px" />
+		</div>
+		
+		<div class="form-group">
+			<label for="expenseCategories" class="sr-only">Kategoria</label>
+			<select id="expenseCategories" name="expenseCategories" class="custom-select" style="max-width: 320px;">
+			
+				<option value="" disabled selected>Wybierz kategorię</option>
+				
+				{% for expenseCategory in expenseCategories %}
+			
+					<option name="expenseCategory" value="{{ expenseCategory.name }}">{{ expenseCategory.name }}</option>
+
+				{% endfor %}
+
+			</select>
+		</div>
+		
+		<div class="form-group">
+            <label for="paymentMethods" class="sr-only">Metoda Płatności</label>
+            <select name="paymentMethods" class="custom-select" style="max-width: 320px;">
+			
+				<option value="" disabled selected>Wybierz metodę płatności</option>
+				
+				{% for paymentMethod in paymentMethods %}
+			
+					<option value="{{ paymentMethod.name }}">{{ paymentMethod.name }}</option>
+
+				{% endfor %}
+
+			</select>
+        </div>
+		<div class="form-group">
+			<label for="comment" class="sr-only">Komentarz</label>
+			<textarea id="comment" class="form-control" name="comment" rows="2" placeholder="Komentarz" style="max-width: 320px;"></textarea>
+		</div>
+
+		<button type="submit" class="btn btn-lg btn-primary">Dodaj</button>
+
+    </form>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+
+    <h3 class="h4 mb-4">Profil użytkownika</h3>
+
+    <dl class="dl-horizontal">
+        <dt>Nazwa użytkownika</dt>
+        <dd>{{ user.name }}</dd>
+		<br />
+        <dt>Adres E-mail</dt>
+        <dd>{{ user.email }}</dd>
+    </dl>
+
+    <a href="/profile/edit">Edytuj</a>
+
+{% endblock %}

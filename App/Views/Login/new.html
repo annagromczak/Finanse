@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+
+    <h3 class="h3 mb-4">Logowanie</h3>
+
+    <form action="/login/create" method="post">
+
+        <div class="form-group">
+            <label for="inputEmail" class="sr-only">Adres e-mail</label>
+            <input type="email" id="inputEmail" name="email" placeholder="Adres e-mail" value="{{ email }}" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="inputPassword" class="sr-only">Hasło</label>
+            <input type="password" id="inputPassword" name="password" placeholder="Hasło" class="form-control" />
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} /> Pamiętaj mnie
+            </label>
+        </div>
+		
+		<button type="submit" class="btn btn-lg btn-primary">Zaloguj</button>
+		
+		<div><a href="/password/forgot" style="color: black;">Nie pamiętasz hasła?</a></div>
+
+    </form>
+
+{% endblock %}
