@@ -40,16 +40,14 @@ class Income extends \Core\Model
      */
 	 public static function saveDefaultIncomes($userId)
 	 {   
+		$sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT :user_id, name FROM incomes_category_default';
 
-			$sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT :user_id, name FROM incomes_category_default';
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
 
-			$db = static::getDB();
-			$stmt = $db->prepare($sql);
+		$stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
 
-			$stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-
-			$stmt->execute();
-			
+		$stmt->execute();
 	 }
 
     /**
@@ -59,7 +57,6 @@ class Income extends \Core\Model
      */
     public function save($incomeCategory)
     {
-		
         $this->validate();
 		$incomeId = static::findIncomeID($incomeCategory);
 
@@ -80,7 +77,6 @@ class Income extends \Core\Model
         }
 
         return false;
-		
     }
 
     /**
@@ -93,13 +89,11 @@ class Income extends \Core\Model
 		//Amount
 		$this->amount = str_replace("," , ".", $this->amount);
 		
-		if (is_numeric($this->amount) == false)
-		{
+		if (is_numeric($this->amount) == false) {
 			$this->errors[] = 'Invalid amount';
 		}
 		
-		if($this->amount < 0)
-		{
+		if ($this->amount < 0) {
 			$this->errors[] = 'Invalid amount';
 		}
 		
@@ -108,14 +102,12 @@ class Income extends \Core\Model
 		//Date
 		$currentDate = date('Y-m-d');
 		
-		if($this->date > $currentDate)
-		{
+		if ($this->date > $currentDate) {
 			$this->errors[] = 'Invalid date! The date cannot be later than the current date.';
 		}
 		
 		//Comment
-		if(strlen($this->comment)>70)
-		{
+		if (strlen($this->comment)>70) {
 			$this->errors[] = 'The comment can contain up to 70 characters!';
 		}
 		
@@ -424,6 +416,5 @@ class Income extends \Core\Model
 		
 		return true;
 	}
-	
 	
 }

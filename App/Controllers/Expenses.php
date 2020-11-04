@@ -83,7 +83,7 @@ class Expenses extends Authenticated
 		$expenseId = Expense::findExpenseID($expenseCategory);
 		$getLimit = Expense::getLimit($expenseId);
 		
-		if($getLimit > 0) {
+		if  ($getLimit > 0) {
 		
 			$amount = $_POST['correctAmount'];
 			$dateExpense = $_POST['dateExpense'];
@@ -97,7 +97,7 @@ class Expenses extends Authenticated
 			
 			$result = $getLimit - $sumOfExpenseAndAmount;
 			
-			if($getLimit < $sumOfExpenseAndAmount) {
+			if ($getLimit < $sumOfExpenseAndAmount) {
 				
 				echo '<p style="background: #fff3d4; color: #ff0d0d;">
 				Dla danej kategorii określony jest miesięczny limit w wysokości: <b>'.number_format($getLimit, 2,'.',' ').'</b> PLN. <br>Dotychczas wydano: <b>'.number_format($sumOfExpense, 2,'.',' ').'</b> PLN. <br>Dotychczas wydano + wpisana kwota wynosi: <b>'.number_format($sumOfExpenseAndAmount, 2,'.',' ').'</b> PLN. <br>Limit przekroczony o: <b>'.number_format(($getLimit-$sumOfExpenseAndAmount), 2,'.',' ').' </b>PLN.

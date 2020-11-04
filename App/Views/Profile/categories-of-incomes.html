@@ -25,20 +25,25 @@
 
 {% block body %}
 
-		<h3 class="h5 mb-3">Ustawienia</h3>
+	<h3 class="h5 mb-3">Ustawienia</h3>
 
-		<div class="categoriesOfIncomes mt-2">
-			<table class="table table-striped m-auto" style="max-width:420px;">
-				<thead>
-					<tr>
-						<th scope="col" colspan="4" style="background-color: #00b8e6; text-align:center; color: white; font-size: 15px; height: 40px;">Kategorie przychodów</th>
-					</tr>
-				</thead>
+	<div class="categoriesOfIncomes mt-2">
+	
+		<table class="table table-striped m-auto" style="max-width:420px;">
+		
+			<thead>
+			
+				<tr>
+					<th scope="col" colspan="4" style="background-color: #00b8e6; text-align:center; color: white; font-size: 15px; height: 40px;">Kategorie przychodów</th>
+				</tr>
 				
-				<tbody>
+			</thead>
+				
+			<tbody>
 										
-					{% for income in income %}
+				{% for income in income %}
 					<tr>
+					
 						<td>{{ loop.index }}</td>
 						
 						<td>{{ income.name }}</td>
@@ -84,6 +89,7 @@
 						</td>
 						
 						<td>
+						
 							<div id="deleteIncome{{ loop.index }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="deleteIncome" aria-hidden="true">
 							
 								<form action="/profile/delete-income" method="post">
@@ -122,37 +128,39 @@
 						</td>
 												
 					</tr>
-					{% endfor %}
-
-				</tbody>
-			</table>
-			
-		</div>
-		
-		<div class="addNewCategory">
-			
-			<h3 class="h5 mb-3 mt-5">Dodaj nową kategorię przychodów</h3>
-
-			{% if income.errors is not empty %}
-				<p>Errors:</p>
-				<ul>
-					{% for error in income.errors %}
-						<li>{{ error }}</li>
-					{% endfor %}
-				</ul>
-			{% endif %}
-
-			<form action="/profile/create-income" method="post" id="formIncome">
-			
-				 <div class="form-group">
-					<label for="inputName" class="sr-only">Nazwa</label>
-					<input id="inputName" name="name" placeholder="Nazwa" value="{{ income.name}}" required class="form-control" style="max-width: 320px;" />
-				</div>
 				
-				<button type="submit" class="btn btn-lg btn-primary">Dodaj</button>
+				{% endfor %}
+
+			</tbody>
+		
+		</table>
 			
-			</form>
+	</div>
+		
+	<div class="addNewCategory">
 			
-		</div>	
+		<h3 class="h5 mb-3 mt-5">Dodaj nową kategorię przychodów</h3>
+
+		{% if income.errors is not empty %}
+			<p>Errors:</p>
+			<ul>
+				{% for error in income.errors %}
+					<li>{{ error }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+
+		<form action="/profile/create-income" method="post" id="formIncome">
+			
+			 <div class="form-group">
+				<label for="inputName" class="sr-only">Nazwa</label>
+				<input id="inputName" name="name" placeholder="Nazwa" value="{{ income.name}}" required class="form-control" style="max-width: 320px;" />
+			</div>
+				
+			<button type="submit" class="btn btn-lg btn-primary">Dodaj</button>
+			
+		</form>
+			
+	</div>	
 
 {% endblock %}

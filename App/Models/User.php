@@ -123,8 +123,7 @@ class User extends \Core\Model
 		
 		$answer = json_decode($checkReCaptcha);
 		
-		if($answer->success == false)
-		{
+		if ($answer->success == false) {
 			$this->errors[] = 'Confirm that you are not a bot';
 		}
 	}
@@ -142,8 +141,11 @@ class User extends \Core\Model
         $user = static::findByEmail($email);
 
         if ($user) {
+			
             if ($user->id != $ignore_id) {
+				
                 return true;
+				
             }
         }
 
@@ -187,8 +189,11 @@ class User extends \Core\Model
 
         //if ($user) {
         if ($user && $user->is_active) {
+			
             if (password_verify($password, $user->password_hash)) {
+				
                 return $user;
+				
             }
         }
 
@@ -340,6 +345,7 @@ class User extends \Core\Model
             if (strtotime($user->password_reset_expires_at) > time()) {
 
                 return $user;
+				
             }
         }
     }

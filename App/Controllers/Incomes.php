@@ -21,7 +21,6 @@ class Incomes extends Authenticated
 		parent::before();
 		
 		$this->user = Auth::getUser();
-		
 	}
 	
     /**

@@ -98,6 +98,7 @@ class BalanceSheet extends Authenticated
 		
 		$this->temporaryInocmesSum = 0;
 		$this->temporaryInocmesSum = Income::temporaryIncomesSum();
+		
 		$this->temporaryExpensesSum = 0;
 		$this->temporaryExpensesSum = Expense::temporaryExpensesSum();
 		
@@ -123,15 +124,17 @@ class BalanceSheet extends Authenticated
 		$incomesId = [];
 		$incomesId = Income::findIncomesIDAssignedToUser();
 		
-		foreach ($incomesId as $incomeId) 
-		{
+		foreach ($incomesId as $incomeId) {
+			
 			$temporarySum = 0;
 			
 			$temporarySum=Income::sumOfIncomeCategoryAssignedToUser($incomeId, $startDate, $endDate);
 		
 			Income::setTemporarySum($incomeId, $temporarySum);
 			$this->income = Income::findIncomeIfSumGreaterThanZero();
+			
 		}
+		
 		return $this->income;
 	}
 	
@@ -145,15 +148,17 @@ class BalanceSheet extends Authenticated
 		$expensesId = [];
 		$expensesId = Expense::findExpensesIDAssignedToUser();
 		
-		foreach ($expensesId as $expenseId) 
-		{
+		foreach ($expensesId as $expenseId) {
+			
 			$temporarySum = 0;
 			
 			$temporarySum=Expense::sumOfExpenseCategoryAssignedToUser($expenseId, $startDate, $endDate);
 		
 			Expense::setTemporarySum($expenseId, $temporarySum);
 			$this->expense = Expense::findExpenseIfSumGreaterThanZero();
+			
 		}
+		
 		return $this->expense;
 	}
 	
@@ -169,12 +174,19 @@ class BalanceSheet extends Authenticated
 		$summary = '';
 		
 		if ($balance > 0) {
+			
 			$summary = 'Saldo wynosi: '.number_format($balance, 2,'.',' ').' PLN. Gratulacje! Świetnie zarządzasz finansami.';
+			
 		} else if ($balance === 0) {
+			
 			$summary = 'Saldo wynosi: '.number_format($balance, 2,'.',' ').' PLN.';
+			
 		} else if ($balance < 0) {
+			
 			$summary = 'Saldo wynosi: '.number_format($balance, 2,'.',' ').' PLN. Uważaj, wpadasz w długi!';
+			
 		}
+		
 		return $summary;
 	}
 }

@@ -41,14 +41,14 @@ class Expense extends \Core\Model
      */
 	 public static function saveDefaultExpenses($userId)
 	 {
-			$sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT :user_id, name FROM expenses_category_default';
+		$sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT :user_id, name FROM expenses_category_default';
 
-			$db = static::getDB();
-			$stmt = $db->prepare($sql);
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
 
-			$stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+		$stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
 
-			$stmt->execute();
+		$stmt->execute();
 	 }
 
     /**
@@ -58,7 +58,6 @@ class Expense extends \Core\Model
      */
     public function save($expenseCategory, $paymentMethod)
     {
-		
         $this->validate();
 		$expenseId = static::findExpenseID($expenseCategory);
 		$paymentMethodId = PaymentMethod::getPaymentMethodID($paymentMethod);
@@ -81,7 +80,6 @@ class Expense extends \Core\Model
         }
 
         return false;
-		
     }
 
     /**
@@ -94,13 +92,11 @@ class Expense extends \Core\Model
 		//Amount
 		$this->amount = str_replace("," , ".", $this->amount);
 		
-		if (is_numeric($this->amount) == false)
-		{
+		if (is_numeric($this->amount) == false) {
 			$this->errors[] = 'Invalid amount';
 		}
 		
-		if($this->amount < 0)
-		{
+		if ($this->amount < 0) {
 			$this->errors[] = 'Invalid amount';
 		}
 		
@@ -109,14 +105,12 @@ class Expense extends \Core\Model
 		//Date
 		$currentDate = date('Y-m-d');
 		
-		if($this->date > $currentDate)
-		{
+		if ($this->date > $currentDate) {
 			$this->errors[] = 'Invalid date! The date cannot be later than the current date.';
 		}
 		
 		//Comment
-		if(strlen($this->comment)>70)
-		{
+		if (strlen($this->comment)>70) {
 			$this->errors[] = 'The comment can contain up to 70 characters!';
 		}
 		
@@ -338,13 +332,11 @@ class Expense extends \Core\Model
 		//Limit
 		$limit = str_replace("," , ".", $limit);
 		
-		if (is_numeric($limit) == false)
-		{
+		if (is_numeric($limit) == false) {
 			$this->errors[] = 'Invalid limit';
 		}
 		
-		if($limit < 0)
-		{
+		if ($limit < 0) {
 			$this->errors[] = 'Invalid limit';
 		}
 		

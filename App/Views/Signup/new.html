@@ -65,14 +65,17 @@
             <label for="inputName" class="sr-only">Nazwa</label>
             <input id="inputName" name="name" placeholder="Nazwa" value="{{ user.name }}" required class="form-control" style="max-width: 320px;" />
         </div>
+		
         <div class="form-group">
             <label for="inputEmail" class="sr-only">Adres e-mail</label>
             <input id="inputEmail" name="email" placeholder="Adres e-mail" value="{{ user.email }}" required type="email" class="form-control" />
         </div>
+		
         <div class="form-group">
             <label for="inputPassword" class="sr-only">Hasło</label>
             <input type="password" id="inputPassword" name="password" placeholder="Hasło" required class="form-control" />
         </div>
+		
 		<div class="reCaptcha">
 			<div class="g-recaptcha m-auto" style="width: 305px;" data-sitekey=""></div>
 		</div>

@@ -40,15 +40,14 @@ class PaymentMethod extends \Core\Model
      */
 	 public static function saveDefaultPaymentMethods($userId)
 	 {
-			
-			$sql = 'INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT :user_id, name FROM payment_methods_default';
+		$sql = 'INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT :user_id, name FROM payment_methods_default';
 
-			$db = static::getDB();
-			$stmt = $db->prepare($sql);
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
 
-			$stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+		$stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
 
-			$stmt->execute();
+		$stmt->execute();
 	 }
 	 
 	/**

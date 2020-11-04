@@ -25,9 +25,13 @@ class View
         $file = dirname(__DIR__) . "/App/Views/$view";  // relative to Core directory
 
         if (is_readable($file)) {
+			
             require $file;
+			
         } else {
+			
             throw new \Exception("$file not found");
+			
         }
     }
 
@@ -57,10 +61,12 @@ class View
         static $twig = null;
 
         if ($twig === null) {
+			
             $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/App/Views');
             $twig = new \Twig\Environment($loader);
             $twig->addGlobal('current_user', \App\Auth::getUser());
             $twig->addGlobal('flash_messages', \App\Flash::getMessages());
+			
         }
 
         return $twig->render($template, $args);

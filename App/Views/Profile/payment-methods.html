@@ -26,135 +26,142 @@
 
 {% block body %}
 
-		<h3 class="h5 mb-3">Ustawienia</h3>
+	<h3 class="h5 mb-3">Ustawienia</h3>
 
-		<div class="categoriesOfPaymentMethods mt-2">
-			<table class="table table-striped m-auto" style="max-width:420px;">
-				<thead>
-					<tr>
-						<th scope="col" colspan="4" style="background-color: #00b8e6; text-align:center; color: white; font-size: 15px; height: 40px;">Metody płatności</th>
-					</tr>
-				</thead>
-				
-				<tbody>
-										
-					{% for paymentMethod in paymentMethod %}
-					<tr>
-					
-						<td>{{ loop.index }}</td>
-					
-						<td>{{ paymentMethod.name }}</td>
-						
-						<td>
-								
-							<div id="editPaymentMethod{{ loop.index }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="editPaymentMethod" aria-hidden="true">
-							
-								<form action="/profile/update-payment-method" method="post">
-			
-									<div class="modal-dialog">
-			
-										<div class="modal-content">
-						
-											<div class="modal-header">
-												<h5>Edycja metody płatności</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-
-											<div class="form-group">
-												<label for="name">Nowa nazwa metody płatności</label>
-												<input type="hidden" name="oldName" value="{{ paymentMethod.name }}" />
-												<input type="text" name="name" value="{{ paymentMethod.name }}" required class="form-control" style="max-width: 320px;" />
-											</div>
-						
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Anuluj</button>
-												<button type="submit" class="btn btn-primary" style="width: 100px;">Zapisz</button>
-											</div>
-
-										</div>
-					
-									</div>
-									
-								</form>
-			
-							</div>
-								
-							<button type="button" class="icon-pencil" data-toggle="modal" data-target="#editPaymentMethod{{ loop.index }}" style="color: #5e5c5c !important; border: none; background-color: transparent;"> </button>
-								
-						</td>
-						
-						<td>
-							<div id="deletePaymentMethod{{ loop.index }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="deletePaymentMethod" aria-hidden="true">
-							
-								<form action="/profile/delete-payment-method" method="post">
-									
-									<div class="modal-dialog">
-			
-										<div class="modal-content">
-						
-											<div class="modal-header">
-												<h5>Usuwanie metody płatności</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-
-											<div class="form-group">
-												<h5></br>Czy na pewno chcesz usunąć metodę płatności?</h5>
-												<input type="hidden" name="oldName" value="{{ paymentMethod.name }}" />
-											</div>
-						
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Anuluj</button>
-												<button type="submit" class="btn btn-primary" style="width: 100px;">Usuń</button>
-											</div>
-
-										</div>
-					
-									</div>
-									
-								</form>
-									
-							</div>
-							
-							<button type="button" class="icon-trash-empty" data-toggle="modal" data-target="#deletePaymentMethod{{ loop.index }}" style="color: #5e5c5c !important; border: none; background-color: transparent;"> </button>
-							
-						</td>
-								
-					</tr>
-					{% endfor %}
-
-				</tbody>
-			</table>
-			
-		</div>
+	<div class="categoriesOfPaymentMethods mt-2">
+	
+		<table class="table table-striped m-auto" style="max-width:420px;">
 		
-		<div class="addNewPaymentMethods">
+			<thead>
 			
-			<h3 class="h5 mb-3 mt-5">Dodaj nową metodę płatności</h3>
-
-			{% if paymentMethod.errors is not empty %}
-				<p>Errors:</p>
-				<ul>
-					{% for error in paymentMethod.errors %}
-						<li>{{ error }}</li>
-					{% endfor %}
-				</ul>
-			{% endif %}
-
-			<form action="/profile/create-payment-method" method="post" id="addNewPaymentMethod">
-			
-				 <div class="form-group">
-					<label for="inputName" class="sr-only">Nazwa</label>
-					<input id="inputName" name="name" placeholder="Nazwa" required class="form-control" style="max-width: 320px;" />
-				</div>
+				<tr>
+					<th scope="col" colspan="4" style="background-color: #00b8e6; text-align:center; color: white; font-size: 15px; height: 40px;">Metody płatności</th>
+				</tr>
 				
-				<button type="submit" class="btn btn-lg btn-primary">Dodaj</button>
+			</thead>
+				
+			<tbody>
+										
+				{% for paymentMethod in paymentMethod %}
+				
+				<tr>
+					
+					<td>{{ loop.index }}</td>
+					
+					<td>{{ paymentMethod.name }}</td>
+						
+					<td>
+								
+						<div id="editPaymentMethod{{ loop.index }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="editPaymentMethod" aria-hidden="true">
+							
+							<form action="/profile/update-payment-method" method="post">
 			
-			</form>
+								<div class="modal-dialog">
 			
-		</div>	
+									<div class="modal-content">
+						
+										<div class="modal-header">
+											<h5>Edycja metody płatności</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+
+										<div class="form-group">
+											<label for="name">Nowa nazwa metody płatności</label>
+											<input type="hidden" name="oldName" value="{{ paymentMethod.name }}" />
+											<input type="text" name="name" value="{{ paymentMethod.name }}" required class="form-control" style="max-width: 320px;" />
+										</div>
+						
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Anuluj</button>
+											<button type="submit" class="btn btn-primary" style="width: 100px;">Zapisz</button>
+										</div>
+
+									</div>
+					
+								</div>
+									
+							</form>
+			
+						</div>
+								
+						<button type="button" class="icon-pencil" data-toggle="modal" data-target="#editPaymentMethod{{ loop.index }}" style="color: #5e5c5c !important; border: none; background-color: transparent;"> </button>
+								
+					</td>
+						
+					<td>
+						<div id="deletePaymentMethod{{ loop.index }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="deletePaymentMethod" aria-hidden="true">
+							
+							<form action="/profile/delete-payment-method" method="post">
+									
+								<div class="modal-dialog">
+			
+									<div class="modal-content">
+						
+										<div class="modal-header">
+											<h5>Usuwanie metody płatności</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+
+										<div class="form-group">
+											<h5></br>Czy na pewno chcesz usunąć metodę płatności?</h5>
+											<input type="hidden" name="oldName" value="{{ paymentMethod.name }}" />
+										</div>
+						
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Anuluj</button>
+											<button type="submit" class="btn btn-primary" style="width: 100px;">Usuń</button>
+										</div>
+
+									</div>
+					
+								</div>
+									
+							</form>
+									
+						</div>
+							
+						<button type="button" class="icon-trash-empty" data-toggle="modal" data-target="#deletePaymentMethod{{ loop.index }}" style="color: #5e5c5c !important; border: none; background-color: transparent;"> </button>
+							
+					</td>
+								
+				</tr>
+		
+				{% endfor %}
+
+			</tbody>
+		
+		</table>
+			
+	</div>
+		
+	<div class="addNewPaymentMethods">
+			
+		<h3 class="h5 mb-3 mt-5">Dodaj nową metodę płatności</h3>
+
+		{% if paymentMethod.errors is not empty %}
+			<p>Errors:</p>
+			<ul>
+				{% for error in paymentMethod.errors %}
+					<li>{{ error }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+
+		<form action="/profile/create-payment-method" method="post" id="addNewPaymentMethod">
+			
+			<div class="form-group">
+				<label for="inputName" class="sr-only">Nazwa</label>
+				<input id="inputName" name="name" placeholder="Nazwa" required class="form-control" style="max-width: 320px;" />
+			</div>
+				
+			<button type="submit" class="btn btn-lg btn-primary">Dodaj</button>
+			
+		</form>
+			
+	</div>	
 
 {% endblock %}

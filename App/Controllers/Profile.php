@@ -110,7 +110,7 @@ class Profile extends Authenticated
 		
 		$name = ucfirst(strtolower($_POST['name']));
 		
-		if(Income::isIncomeExist($name) == FALSE) {
+		if (Income::isIncomeExist($name) == FALSE) {
 		
 			if ($income->saveNewIncome($name)) {
 
@@ -169,7 +169,7 @@ class Profile extends Authenticated
 		
 		$name = ucfirst(strtolower($_POST['name']));
 		
-		if(Expense::isExpenseExist($name) == FALSE) {
+		if (Expense::isExpenseExist($name) == FALSE) {
 
 			if ($expense->saveNewExpense($name)) {
 				
@@ -188,6 +188,7 @@ class Profile extends Authenticated
 				$this->redirect('/profile/categories-of-expenses');
 
 			}
+			
 		} else {
 			
 			Flash::addMessage('Kategoria o podanej nazwie już istnieje.', Flash::WARNING);
@@ -264,9 +265,9 @@ class Profile extends Authenticated
 		
 		$newName = ucfirst(strtolower($_POST['name']));
 		
-		if(Income::isIncomeExist($newName) == FALSE) {
+		if (Income::isIncomeExist($newName) == FALSE) {
 			
-			if($oldName != $newName) {
+			if ($oldName != $newName) {
 					
 				$income->updateIncome($incomeID, $newName);
 					
@@ -281,6 +282,7 @@ class Profile extends Authenticated
 				$this->redirect('/profile/categories-of-incomes');
 
 			}
+			
 		} else {
 				
 			Flash::addMessage('Kategoria o podanej nazwie już istnieje.', Flash::WARNING);
@@ -305,11 +307,11 @@ class Profile extends Authenticated
 		
 		$newName = ucfirst(strtolower($_POST['name']));
 		
-		if(Expense::isExpenseExist($newName) == FALSE) {
+		if (Expense::isExpenseExist($newName) == FALSE) {
 			
-			if($oldName == $newName) {
+			if ($oldName == $newName) {
 				
-				if(!empty($_POST['limit'])) $expense->updateLimit($expenseID, $_POST['limit']);
+				if (!empty($_POST['limit'])) $expense->updateLimit($expenseID, $_POST['limit']);
 				
 				Flash::addMessage('Zamiany zostały zapisane.');
 				
@@ -332,9 +334,10 @@ class Profile extends Authenticated
 				$this->redirect('/profile/categories-of-expenses');
 
 			}
+			
 		} else {
 			
-			if(!empty($_POST['limit']) OR ($_POST['limit']==0)) {
+			if (!empty($_POST['limit']) OR ($_POST['limit'] == 0)) {
 				
 				$expense->updateLimit($expenseID, $_POST['limit']);
 				
